@@ -1,70 +1,57 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Movie Ticket Booking Website Clone
 
-## Available Scripts
+This project is a clone of a movie ticket booking website, inspired by the features and design of popular platforms like BookMyShow. It is built using React.js, Tailwind CSS & MongoDB.
+ 
+## Features
 
-In the project directory, you can run:
+- **Browse Movies:**
+  - Users can browse a collection of movies available for booking.
 
-### `npm start`
+- **Filter Functionality:**
+  - Search for movies by Resolution, genre, language, etc.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **View Movie Details :**
+  - Detailed information about each movie, including synopsis, cast, duration, rating, etc.
+- **Select Showtimes:**
+  - Choose from available showtimes for each movie.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Select Seats:**
+  - Select desired seats from a seating layout.
+- **Book Tickets:**
+  - Book tickets for selected seats and showtimes.
+   
+- **Payment Integration:**
+  - Secure payment options for a seamless checkout experience.
+  - Integration with Razorpay Test Mode payment gateway.
 
-### `npm test`
+- **Responsive Design:**
+  - The application is designed to be responsive and accessible across various devices.
+     Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Database Integration:**
+  - Use MongoDB for storing booking data and fetching already booked seats.
+## Tech Stack
 
-### `npm run build`
+- React.js: Frontend JavaScript library for building user interfaces.
+- React Router
+- Tailwind CSS: Utility-first CSS framework for styling the application.
+- Axios for HTTP requests
+- Razorpay (or other payment gateway)
+- MongoDB: NoSQL database for storing and managing booking data.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## License
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This project is licensed under the [MIT License](LICENSE).
 
-### `npm run eject`
+## Authors
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- [Somnath](https://github.com/SomnathBhunia-dev)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Contributing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Contributions are welcome! If you'd like to contribute to the project, please follow our [Contribution Guidelines](CONTRIBUTING.md).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---

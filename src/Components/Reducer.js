@@ -37,6 +37,7 @@ export const Reducer = (state, action) => {
                 Booking: action.payload.Item,
                 statusDial: true,
                 statusDialMsg: action.payload.Msg,
+                Loading: false
             }
         case "REMOVE_TXN_STATUS":
             return {
@@ -86,6 +87,12 @@ export const Reducer = (state, action) => {
                     ...state,
                     Profile: action.payload
                 }
+            case "LOADING":
+                return{
+                    ...state,
+                    Loading: action.payload
+                }
+
         default:
             return state
     }

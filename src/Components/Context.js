@@ -20,23 +20,20 @@ const Context = ({ children }) => {
             Genres: [],
             Languages: []
         },
-        Profile: {},
-        Loading: true
+        Profile: {}
     }
 
     const [state, dispatch] = useReducer(Reducer, initialState)
 
     const fetchApi = async () => {
         try {
-            loadingState(true)
-            const response = await axios.get("/.netlify/functions/moviesList", {
+            const response = await axios.get('/api/public/movies', {
                 headers: {
                     'X-App-Code': 'WEB',
                 },
             });
-            const dataFromBookMyShow = response.data;
+            const dataFromBookMyShow = response.data[0];
             dispatch({ type: "SET_DATA", payload: dataFromBookMyShow })
-            loadingState(false)
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -46,9 +43,6 @@ const Context = ({ children }) => {
         fetchApi()
     }, [])
 
-    const loadingState = (i)=>{
-        dispatch({type: "LOADING", payload: i})
-    }
     const toggleSlot = (i) => {
         dispatch({ type: "CHANGE_SLOT", payload: i })
     }
@@ -63,7 +57,7 @@ const Context = ({ children }) => {
     }, [state.Cart])
 
     const BookOnServer = () => {
-        axios.post('/.netlify/functions/booking', state.Booking)
+        axios.post('/api/private/booking', state.Booking)
             .then(response => {
                 console.log('Response:', response.data);
             })
@@ -94,7 +88,7 @@ const Context = ({ children }) => {
             return;
         }
         let orderAmount = parseInt(state.CartTotal * 100);
-        const data = await fetch("/.netlify/functions/payments", {
+        const data = await fetch("/payment/orders", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -166,7 +160,7 @@ const Context = ({ children }) => {
         dispatch({ type: "ADD_PROFILE", payload: i });
     }
     return (
-        <GlobalContext.Provider value={{ ...state, toggleSlot, addToCart, SeataddToCart, makePayment, txnClear, BookOnServer, FilterTag, saveProfile, loadingState}}>
+        <GlobalContext.Provider value={{ ...state, toggleSlot, addToCart, SeataddToCart, makePayment, txnClear, BookOnServer, FilterTag, saveProfile }}>
             {children}
         </GlobalContext.Provider>
     )

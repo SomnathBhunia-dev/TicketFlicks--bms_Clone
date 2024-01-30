@@ -3,12 +3,11 @@ import BookHeader from './BookHeader'
 import { GlobalState } from './Context'
 import StatusDial from './StatusDial'
 import { useNavigate } from 'react-router-dom'
-import LoadingState from "./LoadingState";
 
 const CheckOut = () => {
     const [DetailsDial, setDetailsDial] = useState(false)
     const [profile, setprofile] = useState({ Name: '', Email: '' })
-    const { Cart, CartTotal, Fee, makePayment, statusDial, statusDialMsg, saveProfile, Profile, Loading, loadingState } = GlobalState()
+    const { Cart, CartTotal, Fee, makePayment, statusDial, statusDialMsg, saveProfile, Profile } = GlobalState()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,13 +26,11 @@ const CheckOut = () => {
         if (Object.keys(Profile)?.length > 0) {
             setDetailsDial(false)
             makePayment();
-            loadingState(true)
         }
     }
     return (
         <>
-            {Loading ? <LoadingState /> :
-                (!Cart || Object.keys(Cart).length) !== 0 &&
+            {(!Cart || Object.keys(Cart).length) !== 0 &&
                 <div>
                     <BookHeader Cart={Cart} />
                     <div className="bg-[#f5f5f5] h-[80vh]">
@@ -88,7 +85,7 @@ const CheckOut = () => {
                                                     <label htmlFor="subject" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your Name</label>
                                                     <input type="text" name='Name' id="Name" className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="Name" required value={profile.Name} onChange={handleInputChange} />
                                                 </div>
-                                                <button type='submit' className='bg-[#eb4e62] text-white p-2 w-40 text-base font-medium rounded-lg my-8'>Proceed</button>
+                                                <button type='submit' className='bg-[#eb4e62] text-white p-2 w-40 text-base font-medium rounded-lg my-8' >Proceed</button>
                                             </form>
                                         </div>
                                     </section>

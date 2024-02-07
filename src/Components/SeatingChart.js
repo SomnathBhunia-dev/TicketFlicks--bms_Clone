@@ -2,29 +2,33 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import footage from './board.png'
-import { GlobalState } from "./Context";
 import { Link, useNavigate } from "react-router-dom";
 import BookHeader from "./BookHeader";
 import LoadingState from "./LoadingState";
+import { useDispatch, useSelector } from "react-redux";
+import { SeataddToCart, loadingState, toggleSlot } from "../Redux/Actions/action";
 
 const SeatingChart = () => {
   const [data, setdata] = useState([])
   const [seatNo, setseatNo] = useState([{ Tag: '', Price: 0, Seat: [] }])
   const [Reserved, setReserved] = useState([])
-  const { Cart, toggleSlot, SeataddToCart, Loading, loadingState } = GlobalState()
+
+  const  Cart = useSelector(state=> state.Cart.Cart)
+  const Loading = useSelector(state=> state.Product.Loading)
+
+  const dispatch = useDispatch()
 
   const fetchApi = async () => {
     try {
-      loadingState(true)
+      dispatch(loadingState(true))
       const response = await axios.get('/.netlify/functions/showTimes/', {
         headers: {
           'X-App-Code': 'WEB',
-          // Add any other headers if needed
         },
       });
       const dataFromBookMyShow = response.data;
       setdata(dataFromBookMyShow)
-      loadingState(false)
+      dispatch(loadingState(false))
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -104,7 +108,7 @@ const SeatingChart = () => {
         <BookHeader Cart={Cart} seatNo={seatNo} />
         <div className="time flex space-x-4 bg-[#f5f5fa] lg:px-8 py-2 min-h-[3rem]">
           <div className="time px-4 lg:px-8 py-2 flex h-fit space-x-6">
-            {Cart?.allTime.times?.map((i) => <div key={i} className={`py-2 px-2 lg:px-4 hover:text-white hover:bg-[#49ba8e] text-[#49ba8e] hover:border-[#49ba8e] ${Cart?.ChooseTime === i && 'bg-[#49ba8e] text-white'}  border border-[#49ba8e] rounded-md cursor-pointer`} onClick={() => toggleSlot(i)} >{i}</div>)}
+            {Cart?.allTime.times?.map((i) => <div key={i} className={`py-2 px-2 lg:px-4 hover:text-white hover:bg-[#49ba8e] text-[#49ba8e] hover:border-[#49ba8e] ${Cart?.ChooseTime === i && 'bg-[#49ba8e] text-white'}  border border-[#49ba8e] rounded-md cursor-pointer`} onClick={() => dispatch(toggleSlot(i))} >{i}</div>)}
           </div>
         </div>
         {!Loading ?
@@ -142,7 +146,7 @@ const SeatingChart = () => {
             {seatNo?.reduce((total, i) => total + i.Seat.length, 0) !== 0 &&
               <div className='fixed bottom-0 w-full p-4 bg-white flex justify-center shadow-md h-16 items-center'>
                 <Link to='/checkout' className="w-fit">
-                  <button className="bg-[#eb4e62] text-white p-2 w-full text-base font-medium rounded-lg" onClick={() => SeataddToCart(seatNo)}>Proceed Rs. {seatNo?.reduce((total, i) => total + i.Price * i.Seat.length, 0)}.00</button>
+                  <button className="bg-[#eb4e62] text-white p-2 w-full text-base font-medium rounded-lg" onClick={() => dispatch(SeataddToCart(seatNo))}>Proceed Rs. {seatNo?.reduce((total, i) => total + i.Price * i.Seat.length, 0)}.00</button>
                 </Link>
               </div>}
           </div>

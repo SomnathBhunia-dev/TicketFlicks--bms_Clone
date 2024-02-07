@@ -1,16 +1,106 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import BookHeader from './BookHeader'
-import { GlobalState } from './Context'
 import StatusDial from './StatusDial'
 import { useNavigate } from 'react-router-dom'
 import LoadingState from "./LoadingState";
+import { useDispatch, useSelector } from 'react-redux'
+import { cartUpdate, loadingState, saveProfile, txnUpdate } from '../Redux/Actions/action'
 
 const CheckOut = () => {
     const [DetailsDial, setDetailsDial] = useState(false)
     const [profile, setprofile] = useState({ Name: '', Email: '' })
-    const { Cart, CartTotal, Fee, makePayment, statusDial, statusDialMsg, saveProfile, Profile, Loading, loadingState } = GlobalState()
-    const navigate = useNavigate();
 
+    const Kid = process.env.REACT_APP_RAZORPAY_KEY_ID
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    const Cart = useSelector(state =>  state.Cart.Cart)
+    const CartTotal = useSelector(state =>  state.Cart.CartTotal)
+    const Fee = useSelector(state =>  state.Cart.Fee)
+    const Profile = useSelector(state =>  state.Cart.Profile)
+    const Loading = useSelector(state =>  state.Product.Loading)
+    const statusDial = useSelector(state =>  state.Cart.statusDial)
+    const statusDialMsg = useSelector(state =>  state.Cart.statusDialMsg)
+
+    const orderSuccess = () => {
+        const booking = {
+            BookingDate:  Cart.BookingDate,
+            BookingTime:  Cart.ChooseTime,
+            MovieName:  Cart.MovieName,
+            movieData:  Cart.movieData,
+            SeatDetails:  Cart.SeatDetails,
+            Amount:  CartTotal,
+            Resolution:  Cart.Resolution,
+            Language:  Cart.Language,
+            Profile:  Profile
+        }
+        dispatch(txnUpdate(booking, 'success'))
+        dispatch(loadingState(false))
+      };
+      
+      const onScriptLoad = async () => {
+        const res = await initiatePayment();
+        if (!res) {
+            alert("Razorpay SDK Failed to load");
+            return;
+        }
+        let orderAmount = parseInt( CartTotal * 100);
+        const data = await fetch("/.netlify/functions/payments", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ Sub_Total: orderAmount }),
+        }).then((t) => t.json());
+      
+      
+        var options = {
+            key: Kid,
+            name: "Guruji Films Pvt Ltd",
+            currency: data.currency,
+            amount: data.amount,
+            order_id: data.id,
+            description:  Cart.MovieName +  Cart.BookingDate +  Cart.ChooseTime,
+            image:
+                "https://cdn.telanganatoday.com/wp-content/uploads/2022/12/AI-1.jpg",
+            handler: function (response) {
+                orderSuccess(response);
+            },
+            prefill: {
+                name:  Profile.Name,
+                email:  Profile.Email,
+                contact: "9898525231",
+            },
+            theme: {
+                color: "#9333ea",
+            },
+        };
+      
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+      };
+      const initiatePayment = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      
+            script.onload = () => {
+                resolve(true);
+            };
+            script.onerror = () => {
+                resolve(false);
+            };
+      
+            document.body.appendChild(script);
+        });
+      };
+      
+      const makePayment = () => {
+        onScriptLoad();
+      };
+      
     useEffect(() => {
         if (!Cart || Object.keys(Cart).length === 0) {
             navigate(-1);
@@ -23,13 +113,17 @@ const CheckOut = () => {
     };
     const payment = (e) => {
         e.preventDefault();
-        saveProfile(profile);
+        dispatch(saveProfile(profile));
         if (Object.keys(Profile)?.length > 0) {
             setDetailsDial(false)
             makePayment();
-            loadingState(true)
+            dispatch(loadingState(true))
         }
     }
+
+    useEffect(() => {
+        dispatch(cartUpdate())
+    }, [Cart])
     return (
         <>
             {Loading ? <LoadingState /> :

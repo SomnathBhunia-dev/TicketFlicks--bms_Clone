@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
-import { GlobalState } from './Context'
 import Qr from './qr.png'
 import Stamp from './booked.png'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Booking = () => {
-  const { Booking } = GlobalState()
+  const Booking = useSelector(state =>  state.Cart.Booking)
 
   const navigate = useNavigate();
 

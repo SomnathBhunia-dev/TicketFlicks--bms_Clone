@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import mIcon from './icons8-smartphone-50.png'
-import { GlobalState } from './Context';
+import { addToCart } from '../Redux/Actions/action';
+import { useDispatch } from 'react-redux';
 
 const SlotPage = () => {
   const [BookDate, setBookDate] = useState(0)
@@ -9,10 +10,10 @@ const SlotPage = () => {
   const location = useLocation();
   const additionalData = location.state?.additionalData;
   const mainData = location.state?.mainData;
-  const { addToCart } = GlobalState()
 
   const navigate = useNavigate()
 
+  const dispatch = useDispatch()
 
   const getNext5DaysDetails = (showTimes) => {
     const daysOfWeekShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -90,7 +91,7 @@ const SlotPage = () => {
       MovieName: mainData?.heading,
       BookingDate: dayOfMonth + month + dayOfWeek,
     }
-    addToCart(movieData)
+    dispatch(addToCart(movieData))
     navigate(`/booktickets/${mainData.heading}`);
   }
 

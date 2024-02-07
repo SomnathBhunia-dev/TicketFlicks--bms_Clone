@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
-import { GlobalState } from "./Context";
+import { useDispatch, useSelector } from "react-redux";
+import  {FilterTag}  from "../Redux/Actions/action";
 
 const FilterOption = ({ Topic, open }) => {
     const [categoryOpen, setCategoryOpen] = useState(open);
-    const {FilterBy, FilterTag} = GlobalState()
+    const FilterBy = useSelector(state => state.Filter.FilterBy)
 
     const toggleButton = (e) => {
         const classList = e.current.classList;
@@ -16,6 +17,14 @@ const FilterOption = ({ Topic, open }) => {
     };
     const CatBtn = useRef()
 
+    const dispatch = useDispatch()
+
+    const handleFilterTag = (e) => {
+        let Name = e.target.name;
+        let value = e.target.value;
+        let isChecked = e.target.checked;
+        dispatch(FilterTag(Name, value, isChecked));
+    };
     return (
         <>
             <button type="button" className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-1" aria-expanded="false" onClick={() => { toggleButton(CatBtn); toggleCategory() }}>
@@ -36,7 +45,7 @@ const FilterOption = ({ Topic, open }) => {
             <div className={`${categoryOpen ? "block" : 'hidden'}`} ref={CatBtn}>
                 <div className='flex flex-col'>
                     {Topic.items.map((i, index) => (
-                        <label key={index}><input type="checkbox" name={Topic.title} value={i.label} checked={FilterBy[Topic.title]?.includes(i.label) || false}  onChange={FilterTag} className="mr-2" />{i.label}</label>
+                        <label key={index}><input type="checkbox" name={Topic.title} value={i.label} checked={FilterBy[Topic.title]?.includes(i.label) || false} onChange={handleFilterTag} className="mr-2" />{i.label}</label>
                     ))}
                 </div>
             </div>

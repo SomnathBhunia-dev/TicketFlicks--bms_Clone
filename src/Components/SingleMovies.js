@@ -4,19 +4,21 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import star from './icons8-star-filled-96.png'
 import BookTIcketsButton from './BookTIcketsButton';
-import { GlobalState } from './Context';
 import LoadingState from './LoadingState'
+import { useDispatch, useSelector } from 'react-redux';
+import { loadingState } from '../Redux/Actions/action';
 
 const SingleMovies = () => {
     const [data, setdata] = useState([])
     const { keyword } = useParams()
-    const { Loading, loadingState } = GlobalState()
+    const Loading = useSelector(state =>  state.Product.Loading)
 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const fetchApi = async () => {
         try {
-            loadingState(true)
+            dispatch(loadingState(true))
             const response = await axios.get(`/.netlify/functions/movies/${keyword}`, {
                 headers: {
                     'X-App-Code': 'WEB',
@@ -24,7 +26,7 @@ const SingleMovies = () => {
             });
             const dataFromBookMyShow = response.data;
             setdata(dataFromBookMyShow)
-            loadingState(false)
+            dispatch(loadingState(false))
         } catch (error) {
             console.error('Error fetching data:', error);
         }

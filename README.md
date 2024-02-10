@@ -1,7 +1,9 @@
 
 # Movie Ticket Booking Website Clone
 
-This project is a clone of a movie ticket booking website, inspired by the features and design of popular platforms like BookMyShow. It is built using React.js, Tailwind CSS & MongoDB.
+This project is a clone of a movie ticket booking website, inspired by the features and design of popular platforms like BookMyShow. It is built using React.js, React-Redux Tailwind CSS & MongoDB.
+
+## [Live Site Here 👈👈](https://ticketflicks-bms-clone.netlify.app/)
  
 ## Features
 
@@ -39,6 +41,7 @@ This project is a clone of a movie ticket booking website, inspired by the featu
 - Axios for HTTP requests
 - Razorpay (or other payment gateway)
 - MongoDB: NoSQL database for storing and managing booking data.
+- React-Redux: Globaly State Management
 
 
 ## License

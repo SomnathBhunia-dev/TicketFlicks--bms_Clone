@@ -17,7 +17,7 @@ const connectDB = async () => {
         return;
     }
 
-    let uri = process.env.REACT_APP_MONGO_ID;
+    let uri = process.env.MONGO_ID;
 
     if (!uri) {
         console.error('ERROR: REACT_APP_MONGO_ID is not defined in environment variables.');

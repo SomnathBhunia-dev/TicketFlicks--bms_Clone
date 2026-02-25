@@ -16,8 +16,19 @@ const connectDB = async () => {
     if (mongoose.connection.readyState >= 1) {
         return;
     }
+
+    let uri = process.env.REACT_APP_MONGO_ID;
+
+    if (!uri) {
+        console.error('ERROR: REACT_APP_MONGO_ID is not defined in environment variables.');
+        return;
+    }
+
+    // Remove any accidental surrounding quotes or whitespace from the variable
+    uri = uri.replace(/^["']|["']$/g, "").trim();
+
     try {
-        await mongoose.connect(process.env.REACT_APP_MONGO_ID, {
+        await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });

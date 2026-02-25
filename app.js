@@ -25,7 +25,18 @@ const connectDB = async () => {
     }
 
     // Remove any accidental surrounding quotes or whitespace from the variable
+    // This handles both single quotes, double quotes, and string literals if they somehow got added
     uri = uri.replace(/^["']|["']$/g, "").trim();
+    if (uri.startsWith("'") && uri.endsWith("'")) {
+        uri = uri.slice(1, -1);
+    }
+    if (uri.startsWith('"') && uri.endsWith('"')) {
+        uri = uri.slice(1, -1);
+    }
+
+    // Log the first few characters to debug without leaking the full password
+    console.log(`Debug URI prefix: ${uri.substring(0, 15)}...`);
+
 
     try {
         await mongoose.connect(uri, {
